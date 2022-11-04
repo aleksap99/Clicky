@@ -16,6 +16,7 @@ export const woodcuttingGatherables: GatherableSpecification[] = [
 			id: 1,
 			name: "Woodcutting",
 			xpGain: 1,
+			requiredLevel: 0,
 		},
 		imagePath: "oak-tree.png",
 	},
@@ -34,6 +35,7 @@ export const woodcuttingGatherables: GatherableSpecification[] = [
 			id: 1,
 			name: "Woodcutting",
 			xpGain: 2,
+			requiredLevel: 1,
 		},
 		imagePath: "pine-tree.png",
 	}

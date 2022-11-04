@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useAppDispatch } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { woodcuttingGatherables, miningGatherables } from "../../data/gatherables/gatherables.data";
 import { GatherableSpecification } from "../../data/gatherables/gatherables.types";
 import { ItemAmount } from "../../data/items/items.types";
@@ -14,10 +14,12 @@ interface GatherableProps {
 
 const Gatherables = ({ skill }: GatherableProps) => {
 	const [aliveGatherables, setAliveGatherables] = useState<any[]>([]);
+	const { skills } = useAppSelector((state) => state.reducer.playerSkills);
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
-		const allGatherables: GatherableSpecification[] = getAllGatherables(skill);
+		const playerSkill = skills.find((playerSkill) => playerSkill.skill.name === skill);
+		const allGatherables: GatherableSpecification[] = getAvailableGatherables(skill, playerSkill!.currentLevel);
 		console.log("use called");
 		const arr = [];
 		for (let i = 0; i < 10; i++) {
@@ -36,7 +38,7 @@ const Gatherables = ({ skill }: GatherableProps) => {
 			);
 		}
 		setAliveGatherables(arr);
-	}, [skill])
+	}, [skill, skills])
 
 	const takeDamage = (clicked: any) => {
 		clicked.health = clicked.health - 1
@@ -81,6 +83,12 @@ function getLeft() {
 	var ww = (window as any).innerWidth;
 	var posy = Math.round(Math.random() * ww) - 20;
 	return posy;
+}
+
+function getAvailableGatherables(skill: string, playerLevel: number): GatherableSpecification[] {
+	const allGatherables = getAllGatherables(skill);
+	const gatherablesByLevel = allGatherables.filter((gatherable) => gatherable.skillInfo.requiredLevel <= playerLevel);
+	return gatherablesByLevel;
 }
 
 function getAllGatherables(skill: string) {

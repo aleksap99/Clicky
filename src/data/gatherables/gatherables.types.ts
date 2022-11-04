@@ -4,7 +4,7 @@ type SkillInfo = {
 	id: number;
 	name: string;
 	xpGain: number;
-	requiredLevel?: number;
+	requiredLevel: number;
 }
 
 export type GatherableSpecification = {
