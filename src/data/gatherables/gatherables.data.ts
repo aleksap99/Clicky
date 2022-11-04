@@ -1,6 +1,6 @@
-import { Gatherable } from "./gatherables.types";
+import { GatherableSpecification } from "./gatherables.types";
 
-const allGatherables: Gatherable[] = [
+export const woodcuttingGatherables: GatherableSpecification[] = [
 	{
 		id: 1,
 		name: "Oak tree",
@@ -39,4 +39,7 @@ const allGatherables: Gatherable[] = [
 	}
 ]
 
-export default allGatherables;
+export const miningGatherables: GatherableSpecification[] = [
+
+];
+

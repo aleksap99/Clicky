@@ -7,7 +7,7 @@ type SkillInfo = {
 	requiredLevel?: number;
 }
 
-export type Gatherable = {
+export type GatherableSpecification = {
 	id: number;
 	name: string;
 	health: number;

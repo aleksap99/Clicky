@@ -11,7 +11,7 @@ function App() {
 				<Route path="/about" element={<div>ovo je about</div>} />
 				<Route path="/game" element={<Game />}>
 					<Route path="inventory" element={<InventoryPage />} />
-					<Route path="woodcutting" element={<Gatherables />} />
+					<Route path="woodcutting" element={<Gatherables skill="Woodcutting"/>} />
 				</Route>
 			</Routes>
 		</Router>
