@@ -1,42 +1,43 @@
+import { EquipSlot } from "../equipment/equipment.types";
+
 export enum ItemType {
-	Material,
-	Consumable,
-	Weapon,
-	Armor,
+  Material,
+  Consumable,
+  Weapon,
+  Armor,
 }
 
-export enum EquipSlot {
-	Head,
-	Chest,
-	Gloves,
-	Feet,
-	Legs,
-	Ring,
-	Trinket,
+interface EquipableInfo {
+  equipSlot: EquipSlot;
+  strength?: number;
+  dexterity?: number;
+  haste?: number;
+  damage?: number;
+  armor?: number;
 }
 
 export type ItemSpecification = {
-	id: number;
-	name: string;
-	type: ItemType;
-	equipSlot?: EquipSlot;
-	flavorText: string;
-	imagePath: string;
+  id: number;
+  name: string;
+  type: ItemType;
+  flavorText: string;
+  imagePath: string;
+  equipableInfo?: EquipableInfo;
 }
 
 export type ItemAmount = {
-	itemId: number;
-	amountRange: Range;
-	chance: number;
+  itemId: number;
+  amountRange: Range;
+  chance: number;
 }
 
 export type Range = {
-	min: number;
-	max: number;
+  min: number;
+  max: number;
 }
 
 export type InventoryItemAmount = {
-	itemSpecification: ItemSpecification;
-	amount: number;
+  itemSpecification: ItemSpecification;
+  amount: number;
 }
 

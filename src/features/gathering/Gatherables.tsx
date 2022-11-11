@@ -15,14 +15,14 @@ interface GatherableProps {
 const Gatherables = ({ skill }: GatherableProps) => {
 	const [aliveGatherables, setAliveGatherables] = useState<any[]>([]);
 	const { skills } = useAppSelector((state) => state.reducer.playerSkills);
+	const playerSkill = skills.find((playerSkill) => playerSkill.skill.name === skill);
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
-		const playerSkill = skills.find((playerSkill) => playerSkill.skill.name === skill);
 		const allGatherables: GatherableSpecification[] = getAvailableGatherables(skill, playerSkill!.currentLevel);
 		console.log("use called");
 		const arr = [];
-		for (let i = 0; i < 10; i++) {
+		for (let i = 0; i < 1000; i++) {
 			const randInt = Math.floor(Math.random() * allGatherables.length);
 			const randomGatherable = allGatherables[randInt];
 			arr.push(
@@ -38,7 +38,7 @@ const Gatherables = ({ skill }: GatherableProps) => {
 			);
 		}
 		setAliveGatherables(arr);
-	}, [skill, skills])
+	}, [skill])
 
 	const takeDamage = (clicked: any) => {
 		clicked.health = clicked.health - 1

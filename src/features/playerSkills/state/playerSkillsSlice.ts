@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { PlayerSkill, SkillAmount } from "../../../data/skills/skills.types";
+import { PlayerSkill, SkillAmount, SkillCode } from "../../../data/skills/skills.types";
 import { calculateSkillLevel } from "../services/SkillsService";
 
 type SkillsState = {
@@ -13,7 +13,8 @@ const initialState: SkillsState = {
 			currentLevel: 0,
 			skill: {
 				id: 1,
-				name: "Woodcutting"
+				name: "Woodcutting",
+        code: SkillCode.WOODCUTTING,
 			},
 		},
 	]

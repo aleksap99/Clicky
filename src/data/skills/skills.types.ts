@@ -1,6 +1,11 @@
 export type Skill = {
 	id: number;
 	name: string;
+  code: SkillCode;
+}
+
+export enum SkillCode {
+  WOODCUTTING, WOODWORKING
 }
 
 export type PlayerSkill = {

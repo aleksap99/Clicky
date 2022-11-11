@@ -53,10 +53,10 @@ const Inventory = () => {
 						</Text>
 					</Center>
 					<Wrap p={2}>
-						{inventory.map((item) => (
+						{inventory.map((inventoryItemAmount) => (
 							<InventoryItem
-								key={item.itemSpecification.id}
-								inventoryItem={item}
+								key={inventoryItemAmount.itemSpecification.id}
+								inventoryItemAmount={inventoryItemAmount}
 							/>
 						))}
 					</Wrap>
