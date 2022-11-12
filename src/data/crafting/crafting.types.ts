@@ -14,3 +14,8 @@ export type CraftingTask = {
   locations: string[];
 }
 
+export type CraftingTaskAmount = {
+  taskId: number;
+  amount: number;
+}
+

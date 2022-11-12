@@ -11,19 +11,42 @@ export const allCraftingTasks: CraftingTask[] = [
     consumes: [
       {
         itemId: 1,
-        amountRange: { min: 1, max: 1 },
+        amount: 1,
+        chance: 100,
+      }
+    ],
+    produces: [
+      {
+        itemId: 3 ,
+        amount: 1,
+        chance: 100,
+      }
+    ],
+    locations: ["All"],
+  },
+{
+    id: 2,
+    name: "Cook chicken",
+    timeToComplete: 0,
+    skillCode: SkillCode.COOKING,
+    xpGain: 1,
+    consumes: [
+      {
+        itemId: 1,
+        amount: 1,
         chance: 100,
       }
     ],
     produces: [
       {
         itemId: 3,
-        amountRange: { min: 1, max: 1 },
+        amount: 1,
         chance: 100,
       }
     ],
     locations: ["All"],
   },
+
 ];
 
 

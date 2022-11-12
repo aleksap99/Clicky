@@ -5,7 +5,7 @@ export type Skill = {
 }
 
 export enum SkillCode {
-  WOODCUTTING, WOODWORKING
+  WOODCUTTING, WOODWORKING, COOKING
 }
 
 export type PlayerSkill = {

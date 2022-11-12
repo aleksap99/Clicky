@@ -7,14 +7,16 @@ import { ItemAmount } from "../../../data/items/items.types";
 import { SkillCode } from "../../../data/skills/skills.types";
 import PrimaryButton from "../../../util/components/PrimaryButton";
 import { convertMillis } from "../../../util/utils";
+import { inventoryHasEnoughItems } from "../../inventory/service/inventoryService";
 import { findItemById } from "../../inventory/service/itemService";
-import { findTaskById, getTasksBySkillName } from "../services/CraftingService";
+import { addItemAmountToInventory, removeItemFromInventory } from "../../inventory/state/inventorySlice";
+import { findTaskById, getTasksBySkillCode } from "../services/CraftingService";
 
 interface CraftingPaneProps {
   title: string;
   skillCode: SkillCode;
   taskType?: string;
-  children: any;
+  children?: any;
 }
 
 const CraftingPane = ({
@@ -28,14 +30,15 @@ const CraftingPane = ({
   const toast = useToast();
   const [selectedTask, setSelectedTask] = useState<CraftingTask | null>(null);
   const [amountToCraft, setAmountToCraft] = useState(1);
-  const [displayedTasks, setDisplayedTasks] = useState([]);
+  const [displayedTasks, setDisplayedTasks] = useState<CraftingTask[]>([]);
 
   useEffect(() => {
-    const tasksToDisplay = getTasksBySkillName(
+    const tasksToDisplay = getTasksBySkillCode(
       allCraftingTasks,
       skillCode,
       travelingStatus.currentLocation.name
     )
+    setDisplayedTasks(tasksToDisplay);
   }, [skillCode, travelingStatus.currentLocation, taskType])
 
 
@@ -58,13 +61,39 @@ const CraftingPane = ({
       });
 
     } else {
-      console.log("usao u craft");
-      if (taskType === "CRAFTING") {
-        //dispatch(startCraftingTask({ taskId: selectedTask.id, amount: amountToCraft }));
-      } else {
-        //dispatch(startBurningTask({ taskId: selectedTask.id, amount: amountToCraft }));
-      }
+      const required = selectedTask.consumes.map((consume) => {
+        return {
+          itemId: consume.itemId,
+          amount: consume.amount * amountToCraft,
+          chance: consume.chance,
+        }
+      })
+      if (inventoryHasEnoughItems(required)) {
+        const produces = selectedTask.produces.map((produce) => {
+          return {
+            itemId: produce.itemId,
+            amount: produce.amount * amountToCraft,
+            chance: produce.chance,
+          }
+        })
+        dispatch(removeItemFromInventory(required));
+        dispatch(addItemAmountToInventory(produces));
+        toast({
+          title: "You successfully crafted requested items.",
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
+        });
 
+      } else {
+        toast({
+          title: "You dont have enough items.",
+          status: 'warning',
+          duration: 5000,
+          isClosable: true,
+        });
+
+      }
     }
   }
 
@@ -115,8 +144,7 @@ const CraftingPane = ({
                           </Text>
                         )}
                         <Text fontWeight={900} color="white">
-                          Amount min: {itemAmount.amountRange.min}
-                          Amount max: {itemAmount.amountRange.max}
+                          Amount: {itemAmount.amount}
                         </Text>
 
                         {item && item.equipableInfo?.damage && (

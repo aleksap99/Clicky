@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { woodcuttingGatherables, miningGatherables } from "../../data/gatherables/gatherables.data";
 import { GatherableSpecification } from "../../data/gatherables/gatherables.types";
-import { ItemAmount } from "../../data/items/items.types";
+import { ItemAmountRange } from "../../data/items/items.types";
 import { getRandomFromRange } from "../../util/utils";
-import { addItemAmountToInventory } from "../inventory/state/inventorySlice";
+import { addItemAmountRangeToInventory } from "../inventory/state/inventorySlice";
 import { increaseSkill } from "../playerSkills/state/playerSkillsSlice";
 import Gatherable from "./Gatherable";
 
@@ -20,7 +20,6 @@ const Gatherables = ({ skill }: GatherableProps) => {
 
 	useEffect(() => {
 		const allGatherables: GatherableSpecification[] = getAvailableGatherables(skill, playerSkill!.currentLevel);
-		console.log("use called");
 		const arr = [];
 		for (let i = 0; i < 1000; i++) {
 			const randInt = Math.floor(Math.random() * allGatherables.length);
@@ -48,13 +47,13 @@ const Gatherables = ({ skill }: GatherableProps) => {
 
 			const droppedItems = dropItems(clicked.drops);
 			if (droppedItems.length > 0) {
-				dispatch(addItemAmountToInventory(droppedItems))
+				dispatch(addItemAmountRangeToInventory(droppedItems))
 			}
 			dispatch(increaseSkill({ skillId: clicked.skillInfo.id, amount: clicked.skillInfo.xpGain }));
 		}
 	}
 
-	const dropItems = (drops: ItemAmount[]) => {
+	const dropItems = (drops: ItemAmountRange[]) => {
 		return drops.filter((drop) => {
 			const rolledChance = getRandomFromRange({ min: 0, max: 100 });
 			if (rolledChance <= drop.chance) {

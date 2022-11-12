@@ -1,4 +1,4 @@
-import { ItemAmount, ItemSpecification } from "../items/items.types";
+import { ItemAmountRange, ItemSpecification } from "../items/items.types";
 
 type SkillInfo = {
 	id: number;
@@ -11,7 +11,7 @@ export type GatherableSpecification = {
 	id: number;
 	name: string;
 	health: number;
-	drops: ItemAmount[];
+	drops: ItemAmountRange[];
 	imagePath: string;
 	skillInfo: SkillInfo;
 	requiredItem?: ItemSpecification; // maybe replace this with an id of the requried item / or name or code

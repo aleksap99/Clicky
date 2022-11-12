@@ -27,6 +27,12 @@ export type ItemSpecification = {
 
 export type ItemAmount = {
   itemId: number;
+  amount: number;
+  chance: number;
+}
+
+export type ItemAmountRange = {
+  itemId: number;
   amountRange: Range;
   chance: number;
 }

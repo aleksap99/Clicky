@@ -10,12 +10,13 @@ export function findTaskById(tasks: CraftingTask[], id: number): CraftingTask | 
   return null;
 }
 
-export function getTasksBySkillName(tasks: CraftingTask[], skillCode: SkillCode, locationName: string) {
-	return tasks.filter((task) => task.skillCode === skillCode && (task.locations.includes(locationName) || task.locations.includes("All")));
+export function getTasksBySkillCode(tasks: CraftingTask[], skillCode: SkillCode, locationName: string) {
+  return tasks.filter((task) =>
+    task.skillCode === skillCode && (task.locations.includes(locationName) || task.locations.includes("All")));
 }
 
 export function getTasksByLocation(tasks: CraftingTask[], locationName: string) {
-	return tasks.filter((task) => (task.locations.includes(locationName) || task.locations.includes("All")));
+  return tasks.filter((task) => (task.locations.includes(locationName) || task.locations.includes("All")));
 }
 
 

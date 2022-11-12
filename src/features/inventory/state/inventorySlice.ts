@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { EquipSlot } from "../../../data/equipment/equipment.types";
-import { InventoryItemAmount, ItemAmount, ItemSpecification, ItemType } from "../../../data/items/items.types";
+import { InventoryItemAmount, ItemAmount, ItemAmountRange, ItemSpecification, ItemType } from "../../../data/items/items.types";
 import allItemSpecifications from "../../../data/items/itemspecification.data";
 import { getRandomFromRange } from "../../../util/utils";
 
@@ -60,8 +60,8 @@ export const inventorySlice = createSlice({
     setInventory(state, action) {
       state.inventory = action.payload;
     },
-    addItemAmountToInventory: (state, action: PayloadAction<ItemAmount[]>) => {
-      const drops: ItemAmount[] = action.payload;
+    addItemAmountRangeToInventory: (state, action: PayloadAction<ItemAmountRange[]>) => {
+      const drops: ItemAmountRange[] = action.payload;
       for (let i = 0; i < drops.length; i++) {
         const drop = drops[i];
         const itemToIncrease = state.inventory.find((inventoryItem) => inventoryItem.itemSpecification.id === drop.itemId);
@@ -81,9 +81,42 @@ export const inventorySlice = createSlice({
         }
       }
     },
-    // removeItemFromInventory(state, action) {
-    //   state
-    // }
+    addItemAmountToInventory: (state, action: PayloadAction<ItemAmount[]>) => {
+      const drops: ItemAmount[] = action.payload;
+      for (let i = 0; i < drops.length; i++) {
+        const drop = drops[i];
+        const itemToIncrease = state.inventory.find((inventoryItem) => inventoryItem.itemSpecification.id === drop.itemId);
+        if (itemToIncrease) {
+          itemToIncrease.amount += drop.amount;
+        } else {
+          const itemSpecification = allItemSpecifications.find((item) => drop.itemId === item.id);
+          if (itemSpecification) {
+            const inventoryItemToAdd: InventoryItemAmount = {
+              itemSpecification: itemSpecification,
+              amount: drop.amount,
+            }
+            state.inventory.push(inventoryItemToAdd);
+          } else {
+            console.error("Error adding item to inventory -> Item specification not found");
+          }
+        }
+      }
+    },
+
+    removeItemFromInventory(state, action: PayloadAction<ItemAmount[]>) {
+      const itemAmountsToRemove: ItemAmount[] = action.payload;
+      itemAmountsToRemove.forEach((itemAmountToRemove) => {
+        const foundItem = state.inventory.find((invItem) =>
+          invItem.itemSpecification.id === itemAmountToRemove.itemId);
+        if (foundItem) {
+          foundItem.amount -= itemAmountToRemove.amount;
+          if (foundItem.amount <= 0) {
+            state.inventory = state.inventory.filter((item) =>
+              item.itemSpecification.id !== foundItem.itemSpecification.id);
+          }
+        }
+      })
+    },
     setEquipped(state, action) {
       state.equipped = action.payload;
     },
@@ -166,6 +199,6 @@ export const inventorySlice = createSlice({
   },
 });
 
-export const { setInventory, addItemAmountToInventory, setEquipped, equipItem, unequipItem } =
+export const { setInventory, addItemAmountToInventory, addItemAmountRangeToInventory, removeItemFromInventory, setEquipped, equipItem, unequipItem } =
   inventorySlice.actions;
 export const inventoryReducer = inventorySlice.reducer;
