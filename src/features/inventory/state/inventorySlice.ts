@@ -1,28 +1,29 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { EquipSlot } from "../../../data/equipment/equipment.types";
+import { Equipped, EquipSlot } from "../../../data/equipment/equipment.types";
 import { InventoryItemAmount, ItemAmount, ItemAmountRange, ItemSpecification, ItemType } from "../../../data/items/items.types";
 import allItemSpecifications from "../../../data/items/itemspecification.data";
+import { PlayerStats } from "../../../data/stats/stats.types";
 import { getRandomFromRange } from "../../../util/utils";
+import { equipItems, unequipItems } from "../../equipment/services/equipmentService";
 
 interface InventoryState {
+  playerStats: PlayerStats;
   inventory: InventoryItemAmount[];
   equipped: Equipped;
 }
 
-type Equipped = {
-  mainhand: ItemSpecification | null;
-  offhand: ItemSpecification | null;
-  chest: ItemSpecification | null;
-  gloves: ItemSpecification | null;
-  head: ItemSpecification | null;
-  neck: ItemSpecification | null;
-  legs: ItemSpecification | null;
-  feet: ItemSpecification | null;
-  trinket: ItemSpecification | null;
-  ring: ItemSpecification | null,
-}
+
 
 const initialState: InventoryState = {
+  playerStats: {
+    damage: 1,
+    armor: 1,
+    maxHealth: 100,
+    currentHealth: 100,
+    strength: 0,
+    haste: 0,
+    dexterity: 0,
+  },
   inventory: [
     {
       itemSpecification: {
@@ -122,79 +123,11 @@ export const inventorySlice = createSlice({
     },
     equipItem(state, action: PayloadAction<ItemSpecification>) {
       const item = action.payload;
-      switch (item.equipableInfo?.equipSlot) {
-        case Number(EquipSlot.Mainhand):
-          state.equipped.mainhand = item;
-          break;
-        case Number(EquipSlot.Offhand):
-          state.equipped.offhand = item;
-          break;
-        case Number(EquipSlot.Chest):
-          state.equipped.chest = item;
-          break;
-        case Number(EquipSlot.Gloves):
-          state.equipped.gloves = item;
-          break;
-        case Number(EquipSlot.Head):
-          state.equipped.head = item;
-          break;
-        case Number(EquipSlot.Neck):
-          state.equipped.neck = item;
-          break;
-        case Number(EquipSlot.Feet):
-          state.equipped.feet = item;
-          break;
-        case Number(EquipSlot.Trinket):
-          state.equipped.trinket = item;
-          break;
-        case Number(EquipSlot.Legs):
-          state.equipped.legs = item;
-          break;
-        case Number(EquipSlot.Ring):
-          state.equipped.ring = item;
-          break;
-        default:
-          console.error(`Equip slot not found ${item.equipableInfo?.equipSlot}`);
-          break;
-      }
+      equipItems(state.equipped, item, state.playerStats);
     },
-    unequipItem(state, action) {
+    unequipItem(state, action: PayloadAction<EquipSlot>) {
       const equipSlot = action.payload;
-      switch (equipSlot) {
-        case Number(EquipSlot.Mainhand):
-          state.equipped.mainhand = null;
-          break;
-        case Number(EquipSlot.Offhand):
-          state.equipped.offhand = null;
-          break;
-        case Number(EquipSlot.Chest):
-          state.equipped.chest = null;
-          break;
-        case Number(EquipSlot.Gloves):
-          state.equipped.gloves = null;
-          break;
-        case Number(EquipSlot.Head):
-          state.equipped.head = null;
-          break;
-        case Number(EquipSlot.Neck):
-          state.equipped.neck = null;
-          break;
-        case Number(EquipSlot.Feet):
-          state.equipped.feet = null;
-          break;
-        case Number(EquipSlot.Trinket):
-          state.equipped.trinket = null;
-          break;
-        case Number(EquipSlot.Legs):
-          state.equipped.legs = null;
-          break;
-        case Number(EquipSlot.Ring):
-          state.equipped.ring = null;
-          break;
-        default:
-          console.error(`Equip slot not found ${equipSlot}`);
-          break;
-      }
+      unequipItems(state.equipped, equipSlot, state.playerStats);
     },
   },
 });

@@ -7,7 +7,7 @@ export enum ItemType {
   Armor,
 }
 
-interface EquipableInfo {
+export interface EquipableInfo {
   equipSlot: EquipSlot;
   strength?: number;
   dexterity?: number;

@@ -37,8 +37,8 @@ const EquippedItem = ({ equippedItem, emptyImagePath, alt }: EquippedItemProps) 
   const initialFocusRef = React.useRef(null);
 
   const handleUnequipClick = () => {
-    if (equippedItem) {
-      dispatch(unequipItem(equippedItem.equipableInfo?.equipSlot));
+    if (equippedItem?.equipableInfo) {
+      dispatch(unequipItem(equippedItem.equipableInfo.equipSlot));
     }
   }
 
