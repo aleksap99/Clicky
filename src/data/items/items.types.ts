@@ -14,6 +14,7 @@ export interface EquipableInfo {
   haste?: number;
   damage?: number;
   armor?: number;
+  woodcutting?: number;
 }
 
 export type ItemSpecification = {

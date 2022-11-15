@@ -23,6 +23,7 @@ const initialState: InventoryState = {
     strength: 0,
     haste: 0,
     dexterity: 0,
+    woodcutting: 0,
   },
   inventory: [
     {
@@ -35,6 +36,20 @@ const initialState: InventoryState = {
         equipableInfo: {
           equipSlot: EquipSlot.Mainhand,
           damage: 5,
+        }
+      },
+      amount: 1,
+    },
+    {
+      itemSpecification: {
+        id: 5,
+        name: "Daud's pickaxe",
+        type: ItemType.Weapon,
+        flavorText: "Daud's most precious pickaxe.",
+        imagePath: "SKILL_MINING.png",
+        equipableInfo: {
+          equipSlot: EquipSlot.Mainhand,
+          woodcutting: 10,
         }
       },
       amount: 1,
@@ -61,19 +76,21 @@ export const inventorySlice = createSlice({
     setInventory(state, action) {
       state.inventory = action.payload;
     },
-    addItemAmountRangeToInventory: (state, action: PayloadAction<ItemAmountRange[]>) => {
-      const drops: ItemAmountRange[] = action.payload;
+    addItemAmountRangeToInventory: (state, action: PayloadAction<{ drops: ItemAmountRange[], flatRate: number }>) => {
+      const drops: ItemAmountRange[] = action.payload.drops;
+      const flatRate: number = action.payload.flatRate;
+
       for (let i = 0; i < drops.length; i++) {
         const drop = drops[i];
         const itemToIncrease = state.inventory.find((inventoryItem) => inventoryItem.itemSpecification.id === drop.itemId);
         if (itemToIncrease) {
-          itemToIncrease.amount += getRandomFromRange(drop.amountRange);
+          itemToIncrease.amount += getRandomFromRange(drop.amountRange) + flatRate;
         } else {
           const itemSpecification = allItemSpecifications.find((item) => drop.itemId === item.id);
           if (itemSpecification) {
             const inventoryItemToAdd: InventoryItemAmount = {
               itemSpecification: itemSpecification,
-              amount: getRandomFromRange(drop.amountRange),
+              amount: getRandomFromRange(drop.amountRange) + flatRate,
             }
             state.inventory.push(inventoryItemToAdd);
           } else {
@@ -103,7 +120,6 @@ export const inventorySlice = createSlice({
         }
       }
     },
-
     removeItemFromInventory(state, action: PayloadAction<ItemAmount[]>) {
       const itemAmountsToRemove: ItemAmount[] = action.payload;
       itemAmountsToRemove.forEach((itemAmountToRemove) => {

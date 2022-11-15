@@ -33,6 +33,17 @@ const allItemSpecifications: ItemSpecification[] = [
       equipSlot: EquipSlot.Mainhand,
       damage: 5,
     }
+  },
+  {
+    id: 5,
+    name: "Daud's pickaxe",
+    type: ItemType.Weapon,
+    flavorText: "Daud's most precious pickaxe.",
+    imagePath: "SKILL_MINING.png",
+    equipableInfo: {
+      equipSlot: EquipSlot.Mainhand,
+      woodcutting: 10,
+    }
   }
 ]
 

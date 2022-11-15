@@ -6,4 +6,5 @@ export type PlayerStats = {
   strength: number;
   haste: number;
   dexterity: number;
+  woodcutting: number;
 }
