@@ -7,7 +7,7 @@ import { ItemAmount } from "../../../data/items/items.types";
 import { SkillCode } from "../../../data/skills/skills.types";
 import PrimaryButton from "../../../util/components/PrimaryButton";
 import { convertMillis } from "../../../util/utils";
-import { inventoryHasEnoughItems } from "../../inventory/service/inventoryService";
+import { inventoryHasItems } from "../../inventory/service/inventoryService";
 import { findItemById } from "../../inventory/service/itemService";
 import { addItemAmountToInventory, removeItemFromInventory } from "../../inventory/state/inventorySlice";
 import { findTaskById, getTasksBySkillCode } from "../services/CraftingService";
@@ -68,7 +68,7 @@ const CraftingPane = ({
           chance: consume.chance,
         }
       })
-      if (inventoryHasEnoughItems(required)) {
+      if (inventoryHasItems(required)) {
         const produces = selectedTask.produces.map((produce) => {
           return {
             itemId: produce.itemId,

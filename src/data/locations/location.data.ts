@@ -156,4 +156,15 @@ export const allLocations: Location[] = [
     x: 5,
     y: 5,
   },
+  {
+    id: 16,
+    code: "LOC_DAUD'S_MINE",
+    name: "Daud's mine",
+    realm: "Thalonia",
+    region: "The Quite Isle",
+    description: "Some text here",
+    requiredItemId: 5,
+    x: 84,
+    y: -16,
+  },
 ]

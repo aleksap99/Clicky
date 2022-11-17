@@ -12,8 +12,6 @@ interface InventoryState {
   equipped: Equipped;
 }
 
-
-
 const initialState: InventoryState = {
   playerStats: {
     damage: 1,
@@ -40,7 +38,7 @@ const initialState: InventoryState = {
       },
       amount: 1,
     },
-    {
+    /*{
       itemSpecification: {
         id: 5,
         name: "Daud's pickaxe",
@@ -53,7 +51,7 @@ const initialState: InventoryState = {
         }
       },
       amount: 1,
-    }
+    }*/
   ],
   equipped: {
     mainhand: null,

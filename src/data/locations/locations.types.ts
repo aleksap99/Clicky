@@ -6,6 +6,7 @@ export type Location = {
   realm: string;
   region: string;
   enemies?: any; // TODO: add proper types
+  requiredItemId?: number;
   x: number;
   y: number;
 }
