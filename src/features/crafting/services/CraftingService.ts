@@ -3,7 +3,7 @@ import { SkillCode } from "../../../data/skills/skills.types";
 
 export function findTaskById(tasks: CraftingTask[], id: number): CraftingTask | null {
   for (var i = 0; i < tasks.length; i++) {
-    if (tasks[i].id == id) {
+    if (tasks[i].id === id) {
       return tasks[i];
     }
   }

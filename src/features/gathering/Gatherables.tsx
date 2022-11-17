@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { woodcuttingGatherables, miningGatherables } from "../../data/gatherables/gatherables.data";
 import { GatherableSpecification } from "../../data/gatherables/gatherables.types";
 import { ItemAmountRange } from "../../data/items/items.types";
+import { Location } from "../../data/locations/locations.types";
 import { getRandomFromRange } from "../../util/utils";
 import { addItemAmountRangeToInventory } from "../inventory/state/inventorySlice";
 import { increaseSkill } from "../playerSkills/state/playerSkillsSlice";
@@ -15,12 +16,13 @@ interface GatherableProps {
 const Gatherables = ({ skill }: GatherableProps) => {
   const [aliveGatherables, setAliveGatherables] = useState<any[]>([]);
   const { skills } = useAppSelector((state) => state.reducer.playerSkills);
+  const { travelingStatus } = useAppSelector((state) => state.reducer.traveling);
   const { playerStats } = useAppSelector((state) => state.reducer.inventory);
   const playerSkill = skills.find((playerSkill) => playerSkill.skill.name === skill);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const allGatherables: GatherableSpecification[] = getAvailableGatherables(skill, playerSkill!.currentLevel);
+    const allGatherables: GatherableSpecification[] = getAvailableGatherables(skill, playerSkill!.currentLevel, travelingStatus.currentLocation);
     const arr = [];
     for (let i = 0; i < 1000; i++) {
       const randInt = Math.floor(Math.random() * allGatherables.length);
@@ -89,9 +91,10 @@ function getLeft() {
   return posy;
 }
 
-function getAvailableGatherables(skill: string, playerLevel: number): GatherableSpecification[] {
+function getAvailableGatherables(skill: string, playerLevel: number, currentLocation: Location): GatherableSpecification[] {
   const allGatherables = getAllGatherables(skill);
-  const gatherablesByLevel = allGatherables.filter((gatherable) => gatherable.skillInfo.requiredLevel <= playerLevel);
+  const gatherablesByLevel = allGatherables.filter((gatherable) =>
+    gatherable.skillInfo.requiredLevel <= playerLevel && gatherable.locationIds?.includes(currentLocation.id));
   return gatherablesByLevel;
 }
 

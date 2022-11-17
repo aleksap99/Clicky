@@ -44,6 +44,13 @@ const allItemSpecifications: ItemSpecification[] = [
       equipSlot: EquipSlot.Mainhand,
       woodcutting: 10,
     }
+  },
+  {
+    id: 6,
+    name: "Palm log",
+    type: ItemType.Material,
+    flavorText: "some text",
+    imagePath: "palm-tree.png",
   }
 ]
 
