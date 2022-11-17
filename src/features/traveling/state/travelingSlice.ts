@@ -20,10 +20,8 @@ const initialState: TravelingState = {
       description: "Starting town",
       x: 50,
       y: 19,
-      enemies: [
-        { name: "Chicken", chance: 50 },
-        { name: "Rat", chance: 40 },
-        { name: "Maniac", chance: 10 },
+      enemyIds: [
+        1
       ],
     },
 
@@ -36,13 +34,10 @@ const initialState: TravelingState = {
       description: "Starting town",
       x: 50,
       y: 19,
-      enemies: [
-        { name: "Chicken", chance: 50 },
-        { name: "Rat", chance: 40 },
-        { name: "Maniac", chance: 10 },
+      enemyIds: [
+        1
       ],
     },
-
     travelingStartedMillis: 0,
     timeNeededMillis: 0,
     timeLeft: 0,

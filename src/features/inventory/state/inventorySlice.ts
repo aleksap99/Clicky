@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Equipped, EquipSlot } from "../../../data/equipment/equipment.types";
-import { InventoryItemAmount, ItemAmount, ItemAmountRange, ItemSpecification, ItemType } from "../../../data/items/items.types";
+import { InventoryItemAmount, ItemAmount, ItemAmountRange, ItemSpecification, ItemType, WeaponType } from "../../../data/items/items.types";
 import allItemSpecifications from "../../../data/items/itemspecification.data";
 import { PlayerStats } from "../../../data/stats/stats.types";
 import { getRandomFromRange } from "../../../util/utils";
@@ -33,6 +33,7 @@ const initialState: InventoryState = {
         imagePath: "iron_short_sword.png",
         equipableInfo: {
           equipSlot: EquipSlot.Mainhand,
+          weaponType: WeaponType.Sword,
           damage: 5,
         }
       },
@@ -132,6 +133,9 @@ export const inventorySlice = createSlice({
         }
       })
     },
+    decreasePlayerHealth(state, action: PayloadAction<number>) {
+      state.playerStats.currentHealth -= action.payload;
+    },
     setEquipped(state, action) {
       state.equipped = action.payload;
     },
@@ -146,6 +150,6 @@ export const inventorySlice = createSlice({
   },
 });
 
-export const { setInventory, addItemAmountToInventory, addItemAmountRangeToInventory, removeItemFromInventory, setEquipped, equipItem, unequipItem } =
+export const { setInventory, addItemAmountToInventory, addItemAmountRangeToInventory, removeItemFromInventory, setEquipped, equipItem, unequipItem, decreasePlayerHealth } =
   inventorySlice.actions;
 export const inventoryReducer = inventorySlice.reducer;

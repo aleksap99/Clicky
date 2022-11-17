@@ -51,7 +51,14 @@ const allItemSpecifications: ItemSpecification[] = [
     type: ItemType.Material,
     flavorText: "some text",
     imagePath: "palm-tree.png",
-  }
+  },
+  {
+    id: 7,
+    name: "Rat blood",
+    type: ItemType.Material,
+    flavorText: "some text",
+    imagePath: "rat-blood.png",
+  },
 ]
 
 export default allItemSpecifications;

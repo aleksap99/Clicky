@@ -110,10 +110,8 @@ export const allLocations: Location[] = [
     description: "Starting town",
     x: 50,
     y: 19,
-    enemies: [
-      { name: "Chicken", chance: 50 },
-      { name: "Rat", chance: 40 },
-      { name: "Maniac", chance: 10 },
+    enemyIds: [
+      1
     ],
   },
   {

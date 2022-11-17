@@ -56,6 +56,8 @@ const Gatherables = ({ skill }: GatherableProps) => {
         const skillFlatRate = playerStats[key]
         dispatch(addItemAmountRangeToInventory({ drops: droppedItems, flatRate: skillFlatRate }))
       }
+
+      // skill increase happens on each click
       dispatch(increaseSkill({ skillId: clicked.skillInfo.id, amount: clicked.skillInfo.xpGain }));
     }
   }

@@ -7,8 +7,15 @@ export enum ItemType {
   Armor,
 }
 
+export enum WeaponType {
+  Sword = "Sword",
+  Axe = "Axe",
+  Dagger = "Dagger",
+}
+
 export interface EquipableInfo {
   equipSlot: EquipSlot;
+  weaponType?: WeaponType;
   strength?: number;
   dexterity?: number;
   haste?: number;

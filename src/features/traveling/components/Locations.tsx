@@ -18,7 +18,7 @@ const defaultLocation: Location = {
   description: "NONE",
   realm: "NONE",
   region: "NONE",
-  enemies: [],
+  enemyIds: [],
   x: 0,
   y: 0,
 }
@@ -51,7 +51,6 @@ const Locations = () => {
     // if required item exists check if use has it
     // if required item does not exist just return true
     if (selectedLocationRequiredItem) {
-      console.log(inventoryHasItem({ itemId: selectedLocationRequiredItem.id, amount: 1, chance: 0 }), "res")
       return inventoryHasItem({ itemId: selectedLocationRequiredItem.id, amount: 1, chance: 0 });
     }
     return true;
