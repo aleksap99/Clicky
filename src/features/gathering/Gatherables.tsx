@@ -1,54 +1,64 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { woodcuttingGatherables, miningGatherables } from "../../data/gatherables/gatherables.data";
-import { GatherableSpecification } from "../../data/gatherables/gatherables.types";
-import { ItemAmountRange } from "../../data/items/items.types";
-import { Location } from "../../data/locations/locations.types";
+import { GatherableInstance } from "../../data/gatherables/gatherables.types";
+import { ItemAmountRange, Range } from "../../data/items/items.types";
+import { LocationGatherable } from "../../data/locations/locations.types";
+import { PlayerSkill } from "../../data/skills/skills.types";
 import { getRandomFromRange } from "../../util/utils";
 import { addItemAmountRangeToInventory } from "../inventory/state/inventorySlice";
 import { increaseSkill } from "../playerSkills/state/playerSkillsSlice";
 import Gatherable from "./Gatherable";
+import { findGatherableById } from "./services/gatherablesService";
 
 interface GatherableProps {
   skill: string;
 }
 
 const Gatherables = ({ skill }: GatherableProps) => {
-  const [aliveGatherables, setAliveGatherables] = useState<any[]>([]);
-  const { skills } = useAppSelector((state) => state.reducer.playerSkills);
-  const { travelingStatus } = useAppSelector((state) => state.reducer.traveling);
-  const { playerStats } = useAppSelector((state) => state.reducer.inventory);
-  const playerSkill = skills.find((playerSkill) => playerSkill.skill.name === skill);
+  const [aliveGatherables, setAliveGatherables] = useState<GatherableInstance[]>([]);
+  const { skills } = useAppSelector((state: any) => state.reducer.playerSkills);
+  const { travelingStatus } = useAppSelector((state: any) => state.reducer.traveling);
+  const { playerStats } = useAppSelector((state: any) => state.reducer.inventory);
+  const playerSkill = skills.find((playerSkill: PlayerSkill) => playerSkill.skill.name === skill);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const allGatherables: GatherableSpecification[] = getAvailableGatherables(skill, playerSkill!.currentLevel, travelingStatus.currentLocation);
-    const arr = [];
-    for (let i = 0; i < 1000; i++) {
-      const randInt = Math.floor(Math.random() * allGatherables.length);
-      const randomGatherable = allGatherables[randInt];
-      arr.push(
-        {
-          id: i,
-          health: randomGatherable.health,
-          top: getTop(),
-          left: getLeft(),
-          imagePath: randomGatherable.imagePath,
-          drops: randomGatherable.drops,
-          skillInfo: randomGatherable.skillInfo,
+    const gatherablesInfo = travelingStatus.currentLocation.gatherablesInfo;
+    let amountToGenerate = gatherablesInfo.amount;
+    let currentIndex = 0;
+    const chanceRange: Range = { min: 0, max: 100 };
+    const instancesToDisplay: GatherableInstance[] = [];
+    while (amountToGenerate > 0) {
+      // get current gatherable
+      const locationGatherable: LocationGatherable = gatherablesInfo.gatherablesData[currentIndex];
+      // roll chance
+      const rolledChance = getRandomFromRange(chanceRange);
+      if (rolledChance < locationGatherable.chance) {
+        // if chance is good add to list and decrement counter
+        const gatherableSpecification = findGatherableById(locationGatherable.gatherableId);
+        if (gatherableSpecification) {
+          const newInstance = new GatherableInstance(gatherableSpecification);
+          instancesToDisplay.push(newInstance);
+          amountToGenerate--;
         }
-      );
+      }
+      if (currentIndex === gatherablesInfo.gatherablesData.length - 1) {
+        currentIndex = 0;
+      } else {
+        // increase counter
+        currentIndex++;
+      }
     }
-    setAliveGatherables(arr);
-  }, [skill])
+    setAliveGatherables(instancesToDisplay);
+  }, [skill, travelingStatus.currentLocation.gatherablesData])
 
-  const takeDamage = (clicked: any) => {
-    clicked.health = clicked.health - 1
-    if (clicked.health <= 0) {
+  const takeDamage = (clicked: GatherableInstance) => {
+    clicked.currentHealth = clicked.currentHealth - 1;
+    if (clicked.currentHealth <= 0) {
       let rest = aliveGatherables.filter((aliveGatherable) => aliveGatherable.id !== clicked.id)
       setAliveGatherables(rest);
 
-      const droppedItems = dropItems(clicked.drops);
+      const droppedItems = dropItems(clicked.specification.drops);
       if (droppedItems.length > 0) {
         type ObjectKey = keyof typeof playerStats;
         const skillLowered: string = skill.toLowerCase();
@@ -58,7 +68,7 @@ const Gatherables = ({ skill }: GatherableProps) => {
       }
 
       // skill increase happens on each click
-      dispatch(increaseSkill({ skillId: clicked.skillInfo.id, amount: clicked.skillInfo.xpGain }));
+      dispatch(increaseSkill({ skillId: clicked.specification.skillInfo.id, amount: clicked.specification.skillInfo.xpGain }));
     }
   }
 
@@ -73,43 +83,21 @@ const Gatherables = ({ skill }: GatherableProps) => {
   }
 
   return (
-    <div>
-      {aliveGatherables.map((gatherable, index) =>
-        <Gatherable key={index} gatherable={gatherable} takeDamage={takeDamage} />
+    <div style={{ background: "blue" }}>
+      {aliveGatherables.map((gatherable: GatherableInstance, index) =>
+        <Gatherable key={index} gatherableInstance={gatherable} takeDamage={takeDamage} canGather={gatherable.specification.skillInfo.requiredLevel <= playerSkill.currentLevel} />
       )}
     </div>
   )
 }
 
-function getTop() {
-  var wh = (window as any).innerHeight;
-  var posx = Math.round(Math.random() * wh) - 20;
-  return posx;
-}
 
-function getLeft() {
-  var ww = (window as any).innerWidth;
-  var posy = Math.round(Math.random() * ww) - 20;
-  return posy;
-}
+function getAvailableGatherables(gatherables: GatherableInstance[], skill: string, playerLevel: number): GatherableInstance[] {
+  gatherables = gatherables.filter((item) => item.specification.skillInfo.name === skill);
 
-function getAvailableGatherables(skill: string, playerLevel: number, currentLocation: Location): GatherableSpecification[] {
-  const allGatherables = getAllGatherables(skill);
-  const gatherablesByLevel = allGatherables.filter((gatherable) =>
-    gatherable.skillInfo.requiredLevel <= playerLevel && gatherable.locationIds?.includes(currentLocation.id));
+  const gatherablesByLevel = gatherables.filter((gatherable) =>
+    gatherable.specification.skillInfo.requiredLevel <= playerLevel);
   return gatherablesByLevel;
 }
-
-function getAllGatherables(skill: string) {
-  if (skill === "Woodcutting") {
-    return woodcuttingGatherables
-  } else if (skill === "Mining") {
-    return miningGatherables
-  } else {
-    console.error(`Skill ${skill} not recognized.`);
-    return [];
-  }
-}
-
 
 export default Gatherables;

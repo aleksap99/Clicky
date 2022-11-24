@@ -59,6 +59,13 @@ const allItemSpecifications: ItemSpecification[] = [
     flavorText: "some text",
     imagePath: "rat-blood.png",
   },
+  {
+    id: 8,
+    name: "Blue oak log",
+    type: ItemType.Material,
+    flavorText: "Nice oak logs",
+    imagePath: "blue-oak-log.png",
+  },
 ]
 
 export default allItemSpecifications;

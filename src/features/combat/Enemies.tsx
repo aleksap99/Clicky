@@ -15,16 +15,13 @@ const Enemies = () => {
   const [top, setTop] = useState(0);
   const [width, setWidth] = useState(0);
   const [left, setLeft] = useState(0);
-  const [clientRect, setClientRect] = useState<DOMRect>({ height: 0, top: 0, width: 0, left: 0 } as DOMRect);
   const [locationHasEnemies, setLocationHasEnemies] = useState<boolean>(false);
   const [aliveEnemies, setAliveEnemies] = useState<EnemyInstance[]>([]);
-  const { skills } = useAppSelector((state) => state.reducer.playerSkills);
   const { travelingStatus } = useAppSelector((state) => state.reducer.traveling);
   const { playerStats, equipped } = useAppSelector((state) => state.reducer.inventory);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-  console.log("useffect 1")
     if (travelingStatus.currentLocation.enemyIds) {
       const enemyInstances: EnemyInstance[] = [];
       const availableEnemies = findEnemiesByIds(travelingStatus.currentLocation.enemyIds);
@@ -42,8 +39,6 @@ const Enemies = () => {
   }, [height, width, top, left])
 
   useEffect(() => {
-
-  console.log("useffect 2")
     if (ref.current) {
       setHeight(ref.current.clientHeight);
       setTop(ref.current.clientTop);
