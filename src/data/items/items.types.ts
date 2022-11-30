@@ -1,10 +1,10 @@
 import { EquipSlot } from "../equipment/equipment.types";
 
 export enum ItemType {
-  Material,
-  Consumable,
-  Weapon,
-  Armor,
+  Material = "Material",
+  Consumable = "Consumable",
+  Weapon = "Weapon",
+  Armor = "Armor",
 }
 
 export enum WeaponType {

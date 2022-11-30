@@ -1,10 +1,6 @@
 import { Box, Button } from '@chakra-ui/react'
-import { useEffect } from 'react'
 
 const PrimaryButton = ({ text, size, onClick, mr, disabled, children }: any) => {
-  useEffect(() => {
-    console.log(disabled, "disabled")
-  })
   return (
     <Button bg="orange.400"
       color="white"

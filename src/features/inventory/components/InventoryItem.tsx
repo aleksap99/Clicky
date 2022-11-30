@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { InventoryItemAmount, ItemType } from "../../../data/items/items.types"
 import React from "react";
-import { url } from "../../../util/utils";
+import { capFirstLetter, url } from "../../../util/utils";
 import { equipItem } from "../state/inventorySlice";
 import { useAppDispatch } from "../../../app/hooks";
 
@@ -26,7 +26,6 @@ const InventoryItem = ({
 }: InventoryItemProps) => {
   const dispatch = useAppDispatch();
   const initialFocusRef = React.useRef(null);
-
   const handleEquipClick = () => {
     dispatch(equipItem(inventoryItemAmount.itemSpecification));
   };
@@ -71,21 +70,37 @@ const InventoryItem = ({
         <PopoverBody>
           <Grid templateColumns="repeat(5, 1fr)" gap={4}>
             <GridItem w="70px" colSpan={1}>
-              <img className="crispImage" src={`/assets/images/${inventoryItemAmount.itemSpecification.imagePath}`} alt="Inventory item" />
+              <img style={styles} className="crispImage" src={`/assets/images/${inventoryItemAmount.itemSpecification.imagePath}`} alt="Inventory item" />
             </GridItem>
             <GridItem colSpan={4}>
               <Text>Desc: {inventoryItemAmount.itemSpecification.flavorText}</Text>
-              <Text mb={1}>Amount: {inventoryItemAmount.amount}</Text>
+              <Text>Amount: {inventoryItemAmount.amount}</Text>
               {isEquippable(inventoryItemAmount.itemSpecification.type) && (
-                <Button
-                  onClick={handleEquipClick}
-                  color="white"
-                  bg="orange.400"
-                  borderRadius={10}
-                  mr={1}
-                >
-                  Equip
-                </Button>
+                <>
+                  {inventoryItemAmount.itemSpecification.equipableInfo &&
+                    Object.keys(inventoryItemAmount.itemSpecification.equipableInfo).map((key, index) => {
+                      const equipableInfo = inventoryItemAmount.itemSpecification.equipableInfo;
+                      type ObjectKey = keyof typeof equipableInfo;
+                      const keyy = key as ObjectKey;
+                      if (equipableInfo) {
+                        return (
+                          <div key={index}>
+                            <Text>{capFirstLetter(key)}: {equipableInfo[keyy]}</Text>
+                          </div>
+                        );
+                      }
+                    })}
+                  <Button
+                    onClick={handleEquipClick}
+                    color="white"
+                    bg="orange.400"
+                    borderRadius={10}
+                    mr={1}
+                    mt={1}
+                  >
+                    Equip
+                  </Button>
+                </>
               )}
               {isConsumable(inventoryItemAmount.itemSpecification.type) && (
                 <Button

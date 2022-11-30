@@ -22,7 +22,6 @@ const Gatherable = ({ gatherableInstance, takeDamage, canGather }: { gatherableI
         setTimeClicked(Date.now());
       }
     }
-    console.log(canGather)
   }
 
   return (

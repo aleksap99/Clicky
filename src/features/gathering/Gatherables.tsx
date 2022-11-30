@@ -64,7 +64,6 @@ const Gatherables = ({ skill }: GatherableProps) => {
   }, [skill, travelingStatus.currentLocation.gatherablesData, height, width, top, left])
 
   useEffect(() => {
-    console.log("use effect 2")
     if (ref.current) {
       setHeight(ref.current.clientHeight);
       setTop(ref.current.clientTop);
