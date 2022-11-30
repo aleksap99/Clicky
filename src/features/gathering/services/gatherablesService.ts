@@ -1,5 +1,5 @@
 import { allGatherables } from "../../../data/gatherables/gatherables.data";
-import { GatherableInstance, GatherableSpecification } from "../../../data/gatherables/gatherables.types";
+import { GatherableSpecification } from "../../../data/gatherables/gatherables.types";
 import { LocationGatherable } from "../../../data/locations/locations.types";
 
 export function findGatherableById(id: number): GatherableSpecification | undefined {
@@ -12,19 +12,6 @@ export function convertLocationGatherableData(gatherablesData: LocationGatherabl
     const found = findGatherableById(data.gatherableId);
     if (found) {
       result.push(found);
-    }
-  });
-  return result;
-}
-
-export function convertGatherableDataToInstance(gatherablesData: LocationGatherable[]): GatherableInstance[] {
-  let result: GatherableInstance[] = [];
-  gatherablesData.forEach((data) => {
-    const found = findGatherableById(data.gatherableId);
-
-    if (found) {
-      const gatherableInstance = new GatherableInstance(found);
-      result.push(gatherableInstance);
     }
   });
   return result;

@@ -25,23 +25,12 @@ export class GatherableInstance {
   top: number;
   left: number;
 
-  constructor(gatherableSpecification: GatherableSpecification) {
+  constructor(gatherableSpecification: GatherableSpecification, top: number, left: number) {
     this.id = uuidv4();
     this.specification = gatherableSpecification;
     this.currentHealth = gatherableSpecification.health;
-    this.top = this.getTop();
-    this.left = this.getLeft();
+    this.top = top;
+    this.left = left;
   }
 
-  getTop() {
-    var wh = (window as any).innerHeight;
-    var posx = Math.round(Math.random() * wh) - 20;
-    return posx;
-  }
-
-  getLeft() {
-    var ww = (window as any).innerWidth;
-    var posy = Math.round(Math.random() * ww) - 20;
-    return posy;
-  }
 }
