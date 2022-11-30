@@ -1,5 +1,5 @@
 import { Box, SimpleGrid } from "@chakra-ui/react";
-import PlayerStatsDisplay from "../playerStats/PlayerStatsDisplay";
+import PlayerStatsDisplay from "../playerStats/components/PlayerStatsDisplay";
 import Enemies from "./Enemies";
 
 const CombatPage = () => {
@@ -9,7 +9,7 @@ const CombatPage = () => {
         <Enemies />
       </Box>
 
-      <Box borderRadius={15} bg="#3c4b64">
+      <Box borderRadius={15} p={4} bg="#3c4b64">
         <PlayerStatsDisplay />
       </Box>
     </SimpleGrid>
