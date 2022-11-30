@@ -19,9 +19,12 @@ const initialState: TravelingState = {
       description: "Starting town",
       x: 50,
       y: 19,
-      enemyIds: [
-        1
-      ],
+      enemyInfo: {
+        amount: 20,
+        enemyData: [
+          { enemyId: 1, chance: 100 },
+        ],
+      },
       gatherablesInfo: {
         amount: 20,
         gatherablesData: [
@@ -41,9 +44,12 @@ const initialState: TravelingState = {
       description: "Starting town",
       x: 50,
       y: 19,
-      enemyIds: [
-        1
-      ],
+      enemyInfo: {
+        amount: 20,
+        enemyData: [
+          { enemyId: 1, chance: 100 },
+        ],
+      },
       gatherablesInfo: {
         amount: 20,
         gatherablesData: [

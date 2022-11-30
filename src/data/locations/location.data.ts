@@ -116,9 +116,12 @@ export const allLocations: Location[] = [
     description: "Starting town",
     x: 50,
     y: 19,
-    enemyIds: [
-      1
-    ],
+    enemyInfo: {
+      amount: 20,
+      enemyData: [
+        { enemyId: 1, chance: 100 },
+      ],
+    },
     gatherablesInfo: {
       amount: 20,
       gatherablesData: [
@@ -126,7 +129,7 @@ export const allLocations: Location[] = [
         { gatherableId: 2, chance: 100 },
         { gatherableId: 4, chance: 10 },
       ],
-    }
+    },
   },
   {
     id: 12,

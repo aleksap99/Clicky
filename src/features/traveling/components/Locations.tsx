@@ -18,7 +18,6 @@ const defaultLocation: Location = {
   description: "NONE",
   realm: "NONE",
   region: "NONE",
-  enemyIds: [],
   x: 0,
   y: 0,
 }

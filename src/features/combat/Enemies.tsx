@@ -2,9 +2,10 @@ import { Center, Text } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { EnemyInstance, EnemySpecification } from "../../data/enemies/enemy.types";
-import { ItemAmountRange } from "../../data/items/items.types";
+import { ItemAmountRange, Range } from "../../data/items/items.types";
+import { LocationEnemy } from "../../data/locations/locations.types";
 import { getRandomFromRange } from "../../util/utils";
-import { findEnemiesByIds } from "../enemies/services/EnemyService";
+import { findEnemyById } from "../enemies/services/EnemyService";
 import { addItemAmountRangeToInventory, decreasePlayerHealth } from "../inventory/state/inventorySlice";
 import { increaseCombatSkill } from "../playerSkills/state/playerSkillsSlice";
 import Enemy from "./Enemy";
@@ -22,16 +23,31 @@ const Enemies = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (travelingStatus.currentLocation.enemyIds) {
-      const enemyInstances: EnemyInstance[] = [];
-      const availableEnemies = findEnemiesByIds(travelingStatus.currentLocation.enemyIds);
-      for (let i = 0; i < 100; i++) {
-        const randInt = Math.floor(Math.random() * availableEnemies.length);
-        const randomEnemySpec: EnemySpecification = availableEnemies[randInt];
-        const newEnemyInstnace = new EnemyInstance(randomEnemySpec, getTop(height, top), getLeft(width, left));
-        enemyInstances.push(newEnemyInstnace);
+    const enemyInfo = travelingStatus.currentLocation.enemyInfo;
+    if (enemyInfo) {
+      let amountToGenerate = enemyInfo.amount;
+      let currentIndex = 0;
+      const chanceRange: Range = { min: 0, max: 100 };
+      const instancesToDisplay: EnemyInstance[] = [];
+
+      while (amountToGenerate > 0) {
+        const locationEnemy: LocationEnemy = enemyInfo.enemyData[currentIndex];
+        const rolledChance = getRandomFromRange(chanceRange);
+        if (rolledChance < locationEnemy.chance) {
+          const enemySpecification = findEnemyById(locationEnemy.enemyId);
+          if (enemySpecification) {
+            const newEnemyInstnace = new EnemyInstance(enemySpecification, getTop(height, top), getLeft(width, left));
+            instancesToDisplay.push(newEnemyInstnace);
+            amountToGenerate--;
+          }
+        }
+        if (currentIndex === enemyInfo.enemyData.length - 1) {
+          currentIndex = 0;
+        } else {
+          currentIndex++;
+        }
       }
-      setAliveEnemies(enemyInstances);
+      setAliveEnemies(instancesToDisplay);
       setLocationHasEnemies(true);
     } else {
       setLocationHasEnemies(false);
@@ -107,7 +123,6 @@ function getTop(height: number, clientTop: number) {
 }
 
 function getLeft(width: number, clientLeft: number) {
-  //var ww = ref.current.clientWidth;
   const max = width - clientLeft - 64;
   const min = clientLeft;
   return Math.random() * (max - min) + min;

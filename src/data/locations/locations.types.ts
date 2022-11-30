@@ -9,6 +9,17 @@ interface GatherablesInfo {
   gatherablesData: LocationGatherable[];
 }
 
+export interface LocationEnemy {
+  enemyId: number;
+  amount?: number;
+  chance: number;
+}
+
+interface EnemyInfo {
+  amount: number;
+  enemyData: LocationEnemy[];
+}
+
 export type Location = {
   id: number;
   code: string;
@@ -16,8 +27,8 @@ export type Location = {
   description?: string;
   realm: string;
   region: string;
-  enemyIds?: number[];
   gatherablesInfo?: GatherablesInfo;
+  enemyInfo?: EnemyInfo;
   requiredItemId?: number;
   x: number;
   y: number;
