@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Center, Text } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { GatherableInstance } from "../../data/gatherables/gatherables.types";
@@ -18,6 +18,7 @@ interface GatherableProps {
 const Gatherables = ({ skill }: GatherableProps) => {
   const ref = useRef<HTMLDivElement>(null)
   const [aliveGatherables, setAliveGatherables] = useState<GatherableInstance[]>([]);
+  const [locationHasGatherables, setLocationHasGatherables] = useState<boolean>(false);
   const { skills } = useAppSelector((state: any) => state.reducer.playerSkills);
   const { travelingStatus } = useAppSelector((state: any) => state.reducer.traveling);
   const { playerStats } = useAppSelector((state: any) => state.reducer.inventory);
@@ -31,32 +32,35 @@ const Gatherables = ({ skill }: GatherableProps) => {
 
   useEffect(() => {
     const gatherablesInfo = travelingStatus.currentLocation.gatherablesInfo;
-    let amountToGenerate = gatherablesInfo.amount;
-    let currentIndex = 0;
-    const chanceRange: Range = { min: 0, max: 100 };
-    const instancesToDisplay: GatherableInstance[] = [];
-    while (amountToGenerate > 0) {
-      // get current gatherable
-      const locationGatherable: LocationGatherable = gatherablesInfo.gatherablesData[currentIndex];
-      // roll chance
-      const rolledChance = getRandomFromRange(chanceRange);
-      if (rolledChance < locationGatherable.chance) {
-        // if chance is good add to list and decrement counter
-        const gatherableSpecification = findGatherableById(locationGatherable.gatherableId);
-        if (gatherableSpecification) {
-          const newInstance = new GatherableInstance(gatherableSpecification, getTop(height, top), getLeft(width, left));
-          instancesToDisplay.push(newInstance);
-          amountToGenerate--;
+    if (gatherablesInfo) {
+      let amountToGenerate = gatherablesInfo.amount;
+      let currentIndex = 0;
+      const chanceRange: Range = { min: 0, max: 100 };
+      const instancesToDisplay: GatherableInstance[] = [];
+      while (amountToGenerate > 0) {
+        // get current gatherable
+        const locationGatherable: LocationGatherable = gatherablesInfo.gatherablesData[currentIndex];
+        // roll chance
+        const rolledChance = getRandomFromRange(chanceRange);
+        if (rolledChance < locationGatherable.chance) {
+          // if chance is good add to list and decrement counter
+          const gatherableSpecification = findGatherableById(locationGatherable.gatherableId);
+          if (gatherableSpecification) {
+            const newInstance = new GatherableInstance(gatherableSpecification, getTop(height, top), getLeft(width, left));
+            instancesToDisplay.push(newInstance);
+            amountToGenerate--;
+          }
+        }
+        if (currentIndex === gatherablesInfo.gatherablesData.length - 1) {
+          currentIndex = 0;
+        } else {
+          // increase counter
+          currentIndex++;
         }
       }
-      if (currentIndex === gatherablesInfo.gatherablesData.length - 1) {
-        currentIndex = 0;
-      } else {
-        // increase counter
-        currentIndex++;
-      }
+      setAliveGatherables(instancesToDisplay);
+      setLocationHasGatherables(true);
     }
-    setAliveGatherables(instancesToDisplay);
   }, [skill, travelingStatus.currentLocation.gatherablesData, height, width, top, left])
 
   useEffect(() => {
@@ -101,11 +105,19 @@ const Gatherables = ({ skill }: GatherableProps) => {
   }
 
   return (
-    <Box ref={ref} height="100%">
-      {aliveGatherables.map((gatherable: GatherableInstance, index) =>
-        <Gatherable key={index} gatherableInstance={gatherable} takeDamage={takeDamage} canGather={gatherable.specification.skillInfo.requiredLevel <= playerSkill.currentLevel} />
-      )}
-    </Box>
+    <>
+      {
+        locationHasGatherables ?
+          (<Box ref={ref} height="100%">
+            {aliveGatherables.map((gatherable: GatherableInstance, index) =>
+              <Gatherable key={index} gatherableInstance={gatherable} takeDamage={takeDamage} canGather={gatherable.specification.skillInfo.requiredLevel <= playerSkill.currentLevel} />
+            )}
+          </Box>) :
+          <Center >
+            <Text color="gray.300" fontSize="2xl">Nothing to gather in your current location for skill {skill}</Text>
+          </Center>
+      }
+    </>
   )
 }
 

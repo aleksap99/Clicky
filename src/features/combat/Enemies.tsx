@@ -49,8 +49,6 @@ const Enemies = () => {
       }
       setAliveEnemies(instancesToDisplay);
       setLocationHasEnemies(true);
-    } else {
-      setLocationHasEnemies(false);
     }
   }, [height, width, top, left])
 

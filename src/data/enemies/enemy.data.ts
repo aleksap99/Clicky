@@ -17,4 +17,21 @@ export const allEnemies: EnemySpecification[] = [
     ],
     imagePath: "rat.png",
   },
+{
+    id: 2,
+    name: "Smuggler",
+    health: 10,
+    damage: 2,
+    armor: 2,
+    xpGain: 1,
+    drops: [
+      {
+        itemId: 4,
+        amountRange: { min: 1, max: 1 },
+        chance: 10,
+      }
+    ],
+    imagePath: "human.png",
+  },
+
 ]

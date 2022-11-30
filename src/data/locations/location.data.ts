@@ -106,6 +106,13 @@ export const allLocations: Location[] = [
     description: "This bay is used to smuggle goods to the Quite isle",
     x: 34,
     y: -61,
+    enemyInfo: {
+      amount: 5,
+      enemyData: [
+        { enemyId: 2, chance: 100 },
+      ],
+    },
+
   },
   {
     id: 11,
