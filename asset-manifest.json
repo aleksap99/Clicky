@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/Clicky/static/css/main.aa5ebc89.css",
-    "main.js": "/Clicky/static/js/main.35c818a3.js",
-    "index.html": "/Clicky/index.html",
-    "main.aa5ebc89.css.map": "/Clicky/static/css/main.aa5ebc89.css.map",
-    "main.35c818a3.js.map": "/Clicky/static/js/main.35c818a3.js.map"
+    "main.css": "/static/css/main.aa5ebc89.css",
+    "main.js": "/static/js/main.899c3b1b.js",
+    "index.html": "/index.html",
+    "main.aa5ebc89.css.map": "/static/css/main.aa5ebc89.css.map",
+    "main.899c3b1b.js.map": "/static/js/main.899c3b1b.js.map"
   },
   "entrypoints": [
     "static/css/main.aa5ebc89.css",
-    "static/js/main.35c818a3.js"
+    "static/js/main.899c3b1b.js"
   ]
 }
