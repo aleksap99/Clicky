@@ -9,7 +9,7 @@ type SkillsState = {
 const initialState: SkillsState = {
   skills: [
     {
-      currentXp: 200,
+      currentXp: 203,
       currentLevel: 0,
       skill: {
         id: 1,
