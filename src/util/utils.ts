@@ -1,6 +1,6 @@
 import { Range } from "../data/items/items.types";
 
-export var url = process.env.REACT_APP_BACKEND_URL;
+export const navBasePath = process.env.REACT_APP_NAV_BASE || "Clicky";
 
 export function chunkArray(arrayToChunk: any, chunkSize: any) {
   var chunkedArray = [];

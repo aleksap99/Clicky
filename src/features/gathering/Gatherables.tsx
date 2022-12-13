@@ -69,9 +69,8 @@ const Gatherables = ({ skill }: GatherableProps) => {
       setTop(ref.current.clientTop);
       setWidth(ref.current.clientWidth);
       setLeft(ref.current.clientLeft);
-
     }
-  }, [])
+  })
 
   const takeDamage = (clicked: GatherableInstance) => {
     clicked.currentHealth = clicked.currentHealth - 1;

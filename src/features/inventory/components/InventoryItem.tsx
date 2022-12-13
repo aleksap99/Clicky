@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { InventoryItemAmount, ItemType } from "../../../data/items/items.types"
 import React from "react";
-import { capFirstLetter, url } from "../../../util/utils";
+import { capFirstLetter } from "../../../util/utils";
 import { equipItem } from "../state/inventorySlice";
 import { useAppDispatch } from "../../../app/hooks";
 
@@ -31,7 +31,7 @@ const InventoryItem = ({
   };
 
   const handleConsumeClick = () => {
-    sendConsumeRequest(inventoryItemAmount);
+    console.log("consume")
   };
 
   const styles = {
@@ -50,7 +50,7 @@ const InventoryItem = ({
         <img
           className="pixelImg"
           style={styles}
-          src={`/assets/images/${inventoryItemAmount.itemSpecification.imagePath}`}
+          src={`${process.env.REACT_APP_ASSETS_DIR}/images/${inventoryItemAmount.itemSpecification.imagePath}`}
           alt="Inventory item"
         />
       </PopoverTrigger>
@@ -70,7 +70,7 @@ const InventoryItem = ({
         <PopoverBody>
           <Grid templateColumns="repeat(5, 1fr)" gap={4}>
             <GridItem w="70px" colSpan={1}>
-              <img style={styles} className="crispImage" src={`/assets/images/${inventoryItemAmount.itemSpecification.imagePath}`} alt="Inventory item" />
+              <img style={styles} className="crispImage" src={`${process.env.REACT_APP_ASSETS_DIR}/images/${inventoryItemAmount.itemSpecification.imagePath}`} alt="Inventory item" />
             </GridItem>
             <GridItem colSpan={4}>
               <Text>Desc: {inventoryItemAmount.itemSpecification.flavorText}</Text>
@@ -119,21 +119,7 @@ const InventoryItem = ({
       </PopoverContent>
     </Popover>
   );
-
-  async function sendConsumeRequest(item: any) {
-    const res = await fetch(url + `/player/consume/${item.id}`, {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("drToken"),
-      },
-    });
-    const data = await res.json();
-    if (res.status === 200) {
-    }
-    return data;
-  }
-};
+}
 
 function isConsumable(itemType: ItemType) {
   if (itemType === ItemType.Consumable) {

@@ -44,11 +44,11 @@ const EquippedItem = ({ equippedItem, emptyImagePath, alt }: EquippedItemProps) 
 
   return (
     <>
-      {equippedItem == null ? <img className="pixelImg" style={styles} src={`/assets/images/${emptyImagePath}.png`} alt={alt} /> :
+      {equippedItem == null ? <img className="pixelImg" style={styles} src={`${process.env.REACT_APP_ASSETS_DIR}/images/${emptyImagePath}.png`} alt={alt} /> :
         <Popover initialFocusRef={initialFocusRef}>
           <PopoverTrigger>
             <Box>
-              <img src={`/assets/images/${equippedItem.imagePath}`} className="crispImage" alt={alt} style={styles} />
+              <img src={`${process.env.REACT_APP_ASSETS_DIR}/images/${equippedItem.imagePath}`} className="crispImage" alt={alt} style={styles} />
             </Box>
           </PopoverTrigger>
           <PopoverContent
@@ -67,7 +67,7 @@ const EquippedItem = ({ equippedItem, emptyImagePath, alt }: EquippedItemProps) 
             <PopoverBody>
               <Grid templateColumns="repeat(5, 1fr)" gap={4}>
                 <GridItem w="70px" colSpan={1}>
-                  <img src={`/assets/images/${equippedItem.imagePath}`} className="crispImage" alt={alt} style={styles} />
+                  <img src={`${process.env.REACT_APP_ASSETS_DIR}/images/${equippedItem.imagePath}`} className="crispImage" alt={alt} style={styles} />
                 </GridItem>
                 <GridItem colSpan={4}>
                   <Text>Desc: {equippedItem.flavorText}</Text>

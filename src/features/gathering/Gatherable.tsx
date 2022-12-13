@@ -30,7 +30,7 @@ const Gatherable = ({ gatherableInstance, takeDamage, canGather }: { gatherableI
       className={clicked ? "dragon" : ""}
       onClick={click} style={{ top: gatherableInstance.top + "px", left: gatherableInstance.left + "px", position: "absolute" }}
     >
-      <img style={{ width: "64px", imageRendering: "crisp-edges" }} src={`/assets/images/${gatherableInstance.specification.imagePath}`} alt="Broken" />
+      <img style={{ width: "64px", imageRendering: "crisp-edges" }} src={`${process.env.REACT_APP_ASSETS_DIR}/images/${gatherableInstance.specification.imagePath}`} alt="Broken" />
     </div>
   )
 }

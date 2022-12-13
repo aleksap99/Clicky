@@ -22,7 +22,7 @@ const TravelingStatus = () => {
             <img
               className="pixelImg"
               style={styles}
-              src="/assets/images/running.png"
+              src={`${process.env.REACT_APP_ASSETS_DIR}/images/running.png`}
               alt="Traveling status"
             />
           </PopoverTrigger>

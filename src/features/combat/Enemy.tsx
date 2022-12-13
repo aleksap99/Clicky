@@ -14,7 +14,7 @@ const Enemy = ({ enemy, enemyClicked }: any) => {
       className={clicked ? "dragon" : ""}
       onClick={click} style={{ top: enemy.top + "px", left: enemy.left + "px", position: "absolute" }}
     >
-      <img style={{ width: "64px", imageRendering: "crisp-edges" }} src={`/assets/images/${enemy.specification.imagePath}`} alt="Broken" />
+      <img style={{ width: "64px", imageRendering: "crisp-edges" }} src={`${process.env.REACT_APP_ASSETS_DIR}/images/${enemy.specification.imagePath}`} alt="Broken" />
     </div>
   );
 
