@@ -33,9 +33,9 @@ const NAV_ITEMS = [
   {
     label: "Character",
     children: [
-      { label: "Activities", to: `/${baseUrl}/activities`, implemented: true },
+      { label: "Activities", to: `/${baseUrl}/activities`, implemented: false },
       { label: "Inventory", to: `/${baseUrl}/inventory`, implemented: true },
-      { label: "Profile", to: `/${baseUrl}/profile`, implemented: true },
+      { label: "Profile", to: `/${baseUrl}/profile`, implemented: false },
     ]
   },
   {
@@ -45,17 +45,17 @@ const NAV_ITEMS = [
       { label: "Camping", to: `/${baseUrl}/camping`, implemented: false },
       { label: "Woodcutting", to: `/${baseUrl}/woodcutting`, implemented: true },
       { label: "Mining", to: `/${baseUrl}/mining`, implemented: true },
-      { label: "Smelting", to: `/${baseUrl}/smelting`, implemented: true },
-      { label: "Fishing", to: `/${baseUrl}/fishing`, implemented: true },
+      { label: "Smelting", to: `/${baseUrl}/smelting`, implemented: false },
+      { label: "Fishing", to: `/${baseUrl}/fishing`, implemented: false },
       { label: "Herbalism", to: `/${baseUrl}/herbalism`, implemented: false },
-      { label: "Firemaking", to: `/${baseUrl}/firemaking`, implemented: true },
+      { label: "Firemaking", to: `/${baseUrl}/firemaking`, implemented: false },
       { label: "Farming", to: `/${baseUrl}/farming`, implemented: false },
-      { label: "Hunting", to: `/${baseUrl}/hunting`, implemented: true },
-      { label: "Butchering", to: `/${baseUrl}/butchering`, implemented: true },
-      { label: "Cooking", to: `/${baseUrl}/cooking`, implemented: true },
+      { label: "Hunting", to: `/${baseUrl}/hunting`, implemented: false },
+      { label: "Butchering", to: `/${baseUrl}/butchering`, implemented: false },
+      { label: "Cooking", to: `/${baseUrl}/cooking`, implemented: false },
       { label: "Leatherworking", to: `/${baseUrl}/leatherworking`, implemented: false },
       { label: "Armorsmithing", to: `/${baseUrl}/armorsmithing`, implemented: false },
-      { label: "Weaponsmithing", to: `/${baseUrl}/weaponsmithing`, implemented: true },
+      { label: "Weaponsmithing", to: `/${baseUrl}/weaponsmithing`, implemented: false },
       { label: "Jewelcrafting", to: `/${baseUrl}/jewelcrafting`, implemented: false },
     ]
   },
